@@ -1,60 +1,49 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: Administrator
- * Date: 2018/6/8
- * Time: 20:23
+ * User: pjc
+ * Date: 2018/6/22
+ * Time: 8:40
  */
-header("content-type:text/html;charset=utf-8");//处理浏览器乱码问题
 include_once './lib/fun.php';
 if($login = checkVisitor_Login()){
     $visitor = $_SESSION['visitor'];
 }
-if(!empty($_GET['keywords'])) {
-    //数据库连接
-    $con = mysqlInit($host, $Username, $Password, $dbName);
-    if(!$con){
-        echo mysql_errno();
-        exit;
-    }
-    $keywords = mysql_real_escape_string(trim($_GET['keywords']));
-    if (!$keywords){
-        msg(2,'搜索内容为空','../index.php');
-    }
-    $newkeywords = '%'.$keywords.'%';
-
-//查询商品
-//检查page参数
-    $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
+$visitorId = $visitor['visitor_id'];
+$page = isset($_GET['page']) ? intval($_GET['page']) : 1;
 //把page与1对比 取中间最大值
-    $page = max($page, 1);
+$page = max($page, 1);
 //每页显示条数
-    $pageSize = 6;
+$pageSize = 6;
 
-    $offset = ($page - 1) * $pageSize;
+$offset = ($page - 1) * $pageSize;
 
-    $sql = "SELECT COUNT(`name`) as total from `nt_goods` WHERE `name` LIKE '{$newkeywords}'";
-    $obj = mysql_query($sql);
-    $result = mysql_fetch_assoc($obj);
-
-    $total = isset($result['total']) ? $result['total'] : 0;
-
-    unset($sql, $result, $obj);
-    //只查询需要的数据
-    $sql = "SELECT `id`,`name`,`pic`,`des` FROM `nt_goods` WHERE `name` LIKE '{$newkeywords}' ORDER BY `create_time` DESC ,`view` desc limit {$offset},{$pageSize} ";
-
-    $obj = mysql_query($sql);
-
-    $goods = array();
-    while ($result = mysql_fetch_assoc($obj)) {
-        $goods[] = $result;
-    }
-
-    $pages = pages($total, $page, $pageSize, 6);
-
-}else{
-    msg(2,'搜索内容为空','../index.php');
+$con = mysqlInit($host, $Username, $Password, $dbName);
+if(!$con){
+    echo mysql_errno();
+    exit;
 }
+
+$sql = "SELECT COUNT(`visitor_id`) as total from `nt_collections` WHERE `visitor_id` = '{$visitorId}'";
+$obj = mysql_query($sql);
+$result = mysql_fetch_assoc($obj);
+$total = isset($result['total'])?$result['total']:0;
+unset($sql,$result,$obj);
+
+//只查询需要的数据
+$sql = "SELECT `id`,`name`,`pic`,`des` FROM `nt_collections` WHERE `visitor_id` = '{$visitorId}' ORDER BY `create_time` DESC ,`view` desc limit {$offset},{$pageSize} ";
+
+$obj = mysql_query($sql);
+
+$goods = array();
+while($result = mysql_fetch_assoc($obj))
+{
+    $goods[] = $result;
+}
+
+$pages = pages($total,$page,$pageSize,6);
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -69,12 +58,16 @@ if(!empty($_GET['keywords'])) {
     <div class="logo f1">
         <a href="../index.php"><img src="../static/image/logo.png"></a>
     </div>
-
+    <div style="float:left;">
+        <form  name="formsearch" action="./search.php" method="get">
+            <input name="keywords" type="text" style="background-color: #60000000;padding-left: 10px; font-size: 12px;font-family: 'Microsoft Yahei'; color: #999999;height: 45px; width: 400px; border: solid 1px #666666; line-height: 28px;" id="go" value="在这里搜索..." onfocus="if(this.value=='在这里搜索...'){this.value='';}"  onblur="if(this.value==''){this.value='在这里搜索...';}" />
+        </form>
+    </div>
     <div class="auth fr">
         <ul>
             <?php if ($login):?>
                 <li><span>您好： <?php echo $visitor['visitor_name'];?></span></li>
-                <li><a href="./pass.php?id=<?php echo $visitor['visitor_id'];?>">密码修改</a></li>
+                <li><a href="./pass.php?id=<?php echo $visitor['visitor_id'];?>">密码管理</a></li>
                 <li><a href="./collection_list.php">我的收藏</a> </li>
                 <li><a href="./log_out.php">退出</a></li>
             <?php else: ?>
@@ -88,7 +81,8 @@ if(!empty($_GET['keywords'])) {
     <div class="banner">
         <img class="banner-img" src="../static/image/welcome.png" width="732px" height="372" alt="图片描述">
     </div>
-    <div class="path">搜索<font style="color:red; margin:0 5px;font-size: 18px;"><?php echo $keywords?></font>结果：共<font style="color:red; margin:0 5px;font-size: 18px;"><?php echo $total;?>条：</div>
+    <div class="path">我的收藏：共<font style="color:red; margin:0 5px;font-size: 18px;"><?php echo $total;?>条：</div>
+
     <div class="img-content">
         <ul>
             <?php foreach ($goods as $g): ?>
@@ -101,7 +95,7 @@ if(!empty($_GET['keywords'])) {
                         </p>
                         <div class="btn">
                             <a href="./detail.php?id=<?php echo $g['id'];?>" class="edit">详情</a>
-<!--                            <a href="./buy.php?id=--><?php //echo $g['id'];?><!--" class="del">联系卖家</a>-->
+<!--                            <a href="./collection.php?id=--><?php //echo $g['id'];?><!--" class="del">收藏</a>-->
                         </div>
                     </div>
                 </li>
@@ -116,3 +110,4 @@ if(!empty($_GET['keywords'])) {
 </div>
 </body>
 </html>
+

@@ -74,7 +74,7 @@ if(!empty($_POST['username'])){
 <body>
 <div class="header">
     <div class="logo f1">
-        <img src="../static/image/logo.png">
+        <a href="../index.php"><img src="../static/image/logo.png"></a>
     </div>
     <div class="auth fr">
         <ul>

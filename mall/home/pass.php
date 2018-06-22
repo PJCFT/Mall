@@ -46,12 +46,12 @@ if(!$visitors){
 <body>
 <div class="header">
     <div class="logo f1">
-        <img src="../static/image/logo.png">
+        <a href="../index.php"><img src="../static/image/logo.png"></a>
     </div>
     <div class="auth fr">
         <ul>
-            <li><a href="login.php">登录</a></li>
-            <li><a href="register.php">注册</a></li>
+            <li><a href="login.php"></a></li>
+            <li><a href="register.php"></a></li>
         </ul>
     </div>
 </div>

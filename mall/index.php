@@ -54,18 +54,19 @@ $pages = pages($total,$page,$pageSize,6);
 <body>
 <div class="header">
     <div class="logo f1">
-        <img src="./static/image/logo.png">
+        <a href="index.php"><img src="./static/image/logo.png"></a>
     </div>
     <div style="float:left;">
         <form  name="formsearch" action="./home/search.php" method="get">
-            <input name="keywords" type="text" style="background-color: #60000000;padding-left: 10px; font-size: 12px;font-family: 'Microsoft Yahei'; color: #999999;height: 45px; width: 500px; border: solid 1px #666666; line-height: 28px;" id="go" value="在这里搜索.....填写完关键字按回车即可..." onfocus="if(this.value=='在这里搜索...'){this.value='';}"  onblur="if(this.value==''){this.value='在这里搜索...';}" />
+            <input name="keywords" type="text" style="background-color: #60000000;padding-left: 10px; font-size: 12px;font-family: 'Microsoft Yahei'; color: #999999;height: 45px; width: 400px; border: solid 1px #666666; line-height: 28px;" id="go" value="在这里搜索..." onfocus="if(this.value=='在这里搜索...'){this.value='';}"  onblur="if(this.value==''){this.value='在这里搜索...';}" />
         </form>
     </div>
     <div class="auth fr">
         <ul>
             <?php if ($login):?>
                 <li><span>您好： <?php echo $visitor['visitor_name'];?></span></li>
-                <li><a href="./home/pass.php?id=<?php echo $visitor['visitor_id'];?>">用户修改</a></li>
+                <li><a href="./home/pass.php?id=<?php echo $visitor['visitor_id'];?>">密码管理</a></li>
+                <li><a href="./home/collection_list.php">我的收藏</a> </li>
                 <li><a href="./home/log_out.php">退出</a></li>
             <?php else: ?>
                 <li><a href="./home/login.php">登录</a></li>
@@ -90,7 +91,7 @@ $pages = pages($total,$page,$pageSize,6);
                     </p>
                     <div class="btn">
                         <a href="./home/detail.php?id=<?php echo $g['id'];?>" class="edit">详情</a>
-                        <a href="./home/buy.php?id=<?php echo $g['id'];?>" class="del">联系卖家</a>
+                        <a href="./home/collection.php?id=<?php echo $g['id'];?>" class="del">收藏</a>
                     </div>
                 </div>
             </li>

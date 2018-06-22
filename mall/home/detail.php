@@ -59,7 +59,7 @@ mysql_query($sql);
 <body class="bgf8">
 <div class="header">
     <div class="logo f1">
-        <img src="../static/image/logo.png">
+        <a href="../index.php"><img src="../static/image/logo.png"></a>
     </div>
     <div class="auth fr">
         <ul>
@@ -85,7 +85,7 @@ mysql_query($sql);
                 </dl>
                 <ul>
                     <li>价格：<br/><span class="price"><?php echo $goods['price'] ?></span>元</li>
-                    <li class="btn"><a href="buy.php?id=<?php echo $g['id'];?>" class="btn btn-bg-red" style="margin-left:38px;">联系卖家</a></li>
+                    <li class="btn"><a href="buy.php?id=<?php echo $user['user_id'];?>" class="btn btn-bg-red" style="margin-left:38px;">联系卖家</a></li>
                     <li class="btn"><a href="javascript:;" class="btn btn-sm-white" style="margin-left:8px;">收藏</a></li>
                 </ul>
             </div>
