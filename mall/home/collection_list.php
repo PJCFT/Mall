@@ -81,7 +81,7 @@ $pages = pages($total,$page,$pageSize,6);
     <div class="banner">
         <img class="banner-img" src="../static/image/welcome.png" width="732px" height="372" alt="图片描述">
     </div>
-    <div class="path">我的收藏：共<font style="color:red; margin:0 5px;font-size: 18px;"><?php echo $total;?>条：</div>
+    <div class="path">我的收藏共：<font style="color:red; margin:0 5px;font-size: 18px;"><?php echo $total;?>条：</div>
 
     <div class="img-content">
         <ul>
@@ -95,7 +95,7 @@ $pages = pages($total,$page,$pageSize,6);
                         </p>
                         <div class="btn">
                             <a href="./detail.php?id=<?php echo $g['id'];?>" class="edit">详情</a>
-<!--                            <a href="./collection.php?id=--><?php //echo $g['id'];?><!--" class="del">收藏</a>-->
+                            <a href="./cancel_collection.php?id=<?php echo $g['id'];?>" class="del" style="width: 100px;">取消收藏</a>
                         </div>
                     </div>
                 </li>
